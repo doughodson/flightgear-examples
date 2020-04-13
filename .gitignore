@@ -1,0 +1,32 @@
+# vs directories
+vs2017/
+vs2019/
+build/obj/
+.vs/
+*.tmp
+
+# vs code
+.vscode
+
+# visual studio generated files
+*.idb
+*.ilk
+*.pdb
+*.exp
+
+# gcc compiled object files
+*.[oa]
+
+# ignore windows executables and libraries
+*.exe
+*.lib
+
+# keep premake
+!premake*.*
+
+# backup files
+*.bak
+*~
+
+# executables
+net_fdm/net_fdm
