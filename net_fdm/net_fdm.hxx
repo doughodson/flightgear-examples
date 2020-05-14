@@ -11,9 +11,6 @@
 #ifndef _NET_FDM_HXX
 #define _NET_FDM_HXX
 
-#include <time.h> // time_t
-#include "stdint.hxx"
-
 // NOTE: this file defines an external interface structure.  Due to
 // variability between platforms and architectures, we only used fixed
 // length types here.  Specifically, integer types can vary in length.
@@ -21,7 +18,6 @@
 // and 8 bytes for double.
 
 const uint32_t FG_NET_FDM_VERSION = 24;
-
 
 // Define a structure containing the top level flight dynamics model
 // parameters

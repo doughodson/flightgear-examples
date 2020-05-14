@@ -69,7 +69,7 @@ void run() {
       Sleep(update_period);
 
       FGNetFDM fdm;
-      memset(&fdm,0,sizeof(fdm));
+      memset(&fdm, 0, sizeof(fdm));
       fdm.version = htonl(FG_NET_FDM_VERSION);
 
       fdm.latitude  = htond(static_cast<double>(latitude * D2R));
@@ -92,7 +92,8 @@ void run() {
 
       fdm.visibility = htonf(visibility);
 
-      sendto(sendSocket, (char*)&fdm, sizeof(fdm), 0, (struct sockaddr*)&sendAddr, sizeof(sendAddr));
+      sendto(sendSocket, reinterpret_cast<char*>(&fdm), sizeof(fdm), 0,
+             reinterpret_cast<struct sockaddr*>(&sendAddr), sizeof(sendAddr));
 
       roll += 5.0;      // increase roll in 5 degree increments
       if (roll > 20.0) {
