@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-#include "net_fdm.hxx"
+#include "FGFDMPacket.hpp"
 
 double htond(double x)	{
    int* p{reinterpret_cast<int*>(&x)};
@@ -68,9 +68,9 @@ void run() {
    while (true) {
       Sleep(update_period);
 
-      FGNetFDM fdm;
+      FGFDMPacket fdm;
       memset(&fdm, 0, sizeof(fdm));
-      fdm.version = htonl(FG_NET_FDM_VERSION);
+      fdm.version = htonl(FGFDMPacket_Version);
 
       fdm.latitude  = htond(static_cast<double>(latitude * D2R));
       fdm.longitude = htond(static_cast<double>(longitude * D2R));
