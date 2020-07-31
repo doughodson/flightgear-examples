@@ -7,11 +7,11 @@
 const uint32_t FGFDMPacket_Version = 24;
 
 //------------------------------------------------------------------------
-// Class: FightGearFdmMPacket
-// Description: This class defines the structure for all the parameters for 
-//              a top level flight dynamics model - it is send as a packet
-//              through the network to the flightgear application to control
-//              cockpit interface
+// Struct: FGFDMPacket
+// Description: This structure contains all the parameters for a top level
+//              flight dynamics model - it is send as a packet through the
+//              network to the flightgear application to control cockpit
+//              interface
 //------------------------------------------------------------------------
 // Original source info below:
 //
@@ -29,20 +29,13 @@ const uint32_t FGFDMPacket_Version = 24;
 // I am not aware of any platforms that don't use 4 bytes for float
 // and 8 bytes for double.
 //------------------------------------------------------------------------
-class FGFDMPacket
+struct FGFDMPacket
 {
-public:
-   FGFDMPacket() =default;
-
    enum {
       FG_MAX_ENGINES = 4,
       FG_MAX_WHEELS = 3,
       FG_MAX_TANKS = 4
    };
-
-   void swapBytes() {
-
-   }
 
    uint32_t version;     // increment when data values change
    uint32_t padding;	    // padding
@@ -124,5 +117,11 @@ public:
    float speedbrake;
    float spoilers;
 };
+
+void swapBytes(FGFDMPacket* x)
+{
+
+
+}
 
 #endif
