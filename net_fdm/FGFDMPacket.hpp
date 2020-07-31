@@ -120,6 +120,40 @@ struct FGFDMPacket
 
 void swapBytes(FGFDMPacket* x)
 {
+   swapEndian<uint32_t>(x->version);
+
+   swapEndian<double>(x->latitude);
+   swapEndian<double>(x->longitude);
+   swapEndian<double>(x->altitude);
+
+   swapEndian<float>(x->phi);
+   swapEndian<float>(x->theta);
+   swapEndian<float>(x->psi);
+
+
+/*
+   fdm.version = htonl(FGFDMPacket_Version);
+
+   fdm.latitude = htond(static_cast<double>(latitude * D2R));
+   fdm.longitude = htond(static_cast<double>(longitude * D2R));
+   fdm.altitude = htond(static_cast<double>(altitude));
+
+   fdm.phi = htonf(static_cast<float>(roll * D2R));
+   fdm.theta = htonf(static_cast<float>(pitch * D2R));
+   fdm.psi = htonf(static_cast<float>(yaw * D2R));
+
+   fdm.num_engines = htonl(1);
+
+   fdm.num_tanks = htonl(1);
+   fdm.fuel_quantity[0] = htonf(100.0);
+
+   fdm.num_wheels = htonl(3);
+
+   fdm.cur_time = htonl(std::time(nullptr));
+   fdm.warp = htonl(1);
+
+   fdm.visibility = htonf(visibility);
+*/
 
 
 }

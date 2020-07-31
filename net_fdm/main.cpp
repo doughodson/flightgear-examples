@@ -7,16 +7,16 @@
 
 #include "FGFDMPacket.hpp"
 
-double htond(double x)	{
-   int* p{reinterpret_cast<int*>(&x)};
-   int tmp{p[0]};
+double htond(double x) {
+   int* p{ reinterpret_cast<int*>(&x) };
+   int tmp{ p[0] };
    p[0] = htonl(p[1]);
    p[1] = htonl(tmp);
    return x;
 }
 
 float htonf(float x) {
-   int* p{reinterpret_cast<int*>(&x)};
+   int* p{ reinterpret_cast<int*>(&x) };
    *p = htonl(*p);
    return x;
 }
@@ -70,6 +70,7 @@ void run() {
 
       FGFDMPacket fdm;
       memset(&fdm, 0, sizeof(fdm));
+
       fdm.version = htonl(FGFDMPacket_Version);
 
       fdm.latitude  = htond(static_cast<double>(latitude * D2R));
