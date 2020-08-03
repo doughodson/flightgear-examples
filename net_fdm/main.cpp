@@ -55,7 +55,7 @@ void run() {
       Sleep(update_period);
 
       // create packet to send to FlightGear, zero initial values
-      FGFDMPacket fdm{};
+      FGFDMPacket fdm;
 
       fdm.version = FGFDMPacket_Version;
 
