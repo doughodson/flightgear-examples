@@ -78,7 +78,9 @@ void run() {
 
       fdm.visibility = visibility;
 
-      swapBytes(&fdm);
+      if (!is_big_endian()) {
+         swapBytes(&fdm);
+      }
 
       sendto(sendSocket, reinterpret_cast<char*>(&fdm), sizeof(fdm), 0,
              reinterpret_cast<struct sockaddr*>(&sendAddr), sizeof(sendAddr));

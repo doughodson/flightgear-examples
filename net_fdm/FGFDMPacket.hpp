@@ -4,7 +4,7 @@
 
 #include "endian_utils.hpp"
 
-const uint32_t FGFDMPacket_Version{24};
+const std::uint32_t FGFDMPacket_Version{24};
 
 //------------------------------------------------------------------------
 // Struct: FGFDMPacket
@@ -87,12 +87,12 @@ struct FGFDMPacket
    float oil_px[FG_MAX_ENGINES]{};             // oil pressure psi
 
    // consumables
-   uint32_t num_tanks{};                  // max number of fuel tanks
+   std::uint32_t num_tanks{};                  // max number of fuel tanks
    float fuel_quantity[FG_MAX_TANKS]{};
 
    // gear status
-   uint32_t num_wheels{};
-   uint32_t wow[FG_MAX_WHEELS]{};
+   std::uint32_t num_wheels{};
+   std::uint32_t wow[FG_MAX_WHEELS]{};
    float gear_pos[FG_MAX_WHEELS]{};
    float gear_steer[FG_MAX_WHEELS]{};
    float gear_compression[FG_MAX_WHEELS]{};
@@ -116,7 +116,7 @@ struct FGFDMPacket
    float spoilers{};
 };
 
-void swapBytes(FGFDMPacket* x)
+void swapBytes(FGFDMPacket* const x)
 {
    swap_endian<std::uint32_t>(x->version);
    swap_endian<std::uint32_t>(x->padding);
@@ -156,13 +156,33 @@ void swapBytes(FGFDMPacket* x)
 
    // engine status
    swap_endian<std::uint32_t>(x->num_engines);
+   for (std::size_t i{}; i < FGFDMPacket::FG_MAX_ENGINES; i++) {
+      swap_endian<std::uint32_t>(x->eng_state[i]);
+      swap_endian<float>(x->rpm[i]);
+      swap_endian<float>(x->fuel_flow[i]);
+      swap_endian<float>(x->fuel_px[i]);
+      swap_endian<float>(x->egt[i]);
+      swap_endian<float>(x->cht[i]);
+      swap_endian<float>(x->mp_osi[i]);
+      swap_endian<float>(x->tit[i]);
+      swap_endian<float>(x->oil_temp[i]);
+      swap_endian<float>(x->oil_px[i]);
+   }
 
    // consumables
    swap_endian<std::uint32_t>(x->num_tanks);
-   swap_endian<float>(x->fuel_quantity[0]);
+   for (std::size_t i{}; i < FGFDMPacket::FG_MAX_TANKS; i++) {
+      swap_endian<float>(x->fuel_quantity[i]);
+   }
 
    // gear status
    swap_endian<std::uint32_t>(x->num_wheels);
+   for (std::size_t i{}; i < FGFDMPacket::FG_MAX_WHEELS; i++) {
+      swap_endian<std::uint32_t>(x->wow[i]);
+      swap_endian<float>(x->gear_pos[i]);
+      swap_endian<float>(x->gear_steer[i]);
+      swap_endian<float>(x->gear_compression[i]);
+   }
 
    // environment
    swap_endian<std::uint32_t>(x->cur_time);
