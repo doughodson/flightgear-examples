@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
    return 0;
 }
 
-#define D2R (3.14159 / 180.0)
+#define D2R (3.14159 / 180.0)            // degrees to radians
 
 void run() {
    const double latitude{45.59823};      // degs
@@ -55,8 +55,7 @@ void run() {
       Sleep(update_period);
 
       // create packet to send to FlightGear, zero initial values
-      FGFDMPacket fdm;
-      memset(&fdm, 0, sizeof(fdm));
+      FGFDMPacket fdm{};
 
       fdm.version = FGFDMPacket_Version;
 

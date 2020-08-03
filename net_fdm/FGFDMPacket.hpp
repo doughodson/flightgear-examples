@@ -4,7 +4,7 @@
 
 #include "endian_utils.hpp"
 
-const uint32_t FGFDMPacket_Version = 24;
+const uint32_t FGFDMPacket_Version{24};
 
 //------------------------------------------------------------------------
 // Struct: FGFDMPacket
@@ -118,56 +118,56 @@ struct FGFDMPacket
 
 void swapBytes(FGFDMPacket* x)
 {
-   swap_endian<std::uint32_t>(x->version);     // increment when data values change
-   swap_endian<std::uint32_t>(x->padding);	   // padding
+   swap_endian<std::uint32_t>(x->version);
+   swap_endian<std::uint32_t>(x->padding);
 
    // positions
-   swap_endian<double>(x->latitude);      // geodetic (radians)
-   swap_endian<double>(x->longitude);     // geodetic (radians)
-   swap_endian<double>(x->altitude);      // above sea level (meters)
-   swap_endian<float>(x->agl);            // above ground level (meters)
-   swap_endian<float>(x->phi);            // roll (radians)
-   swap_endian<float>(x->theta);          // pitch (radians)
-   swap_endian<float>(x->psi);            // yaw or true heading (radians)
-   swap_endian<float>(x->alpha);          // angle of attack (radians)
-   swap_endian<float>(x->beta);           // side slip angle (radians)
+   swap_endian<double>(x->latitude);
+   swap_endian<double>(x->longitude);
+   swap_endian<double>(x->altitude);
+   swap_endian<float>(x->agl);
+   swap_endian<float>(x->phi);
+   swap_endian<float>(x->theta);
+   swap_endian<float>(x->psi);
+   swap_endian<float>(x->alpha);
+   swap_endian<float>(x->beta);
 
    // velocities
-   swap_endian<float>(x->phidot);         // roll rate (radians/sec)
-   swap_endian<float>(x->thetadot);       // pitch rate (radians/sec)
-   swap_endian<float>(x->psidot);         // yaw rate (radians/sec)
-   swap_endian<float>(x->vcas);           // calibrated airspeed
-   swap_endian<float>(x->climb_rate);     // feet per second
-   swap_endian<float>(x->v_north);        // north velocity in local/body frame, fps
-   swap_endian<float>(x->v_east);         // east velocity in local/body frame, fps
-   swap_endian<float>(x->v_down);         // down/vertical velocity in local/body frame, fps
-   swap_endian<float>(x->v_body_u);       // ECEF velocity in body frame
-   swap_endian<float>(x->v_body_v);       // ECEF velocity in body frame
-   swap_endian<float>(x->v_body_w);       // ECEF velocity in body frame
+   swap_endian<float>(x->phidot);
+   swap_endian<float>(x->thetadot);
+   swap_endian<float>(x->psidot);
+   swap_endian<float>(x->vcas);
+   swap_endian<float>(x->climb_rate);
+   swap_endian<float>(x->v_north);
+   swap_endian<float>(x->v_east);
+   swap_endian<float>(x->v_down);
+   swap_endian<float>(x->v_body_u);
+   swap_endian<float>(x->v_body_v);
+   swap_endian<float>(x->v_body_w);
 
    // accelerations
-   swap_endian<float>(x->A_X_pilot);      // X accel in body frame ft/sec^2
-   swap_endian<float>(x->A_Y_pilot);      // Y accel in body frame ft/sec^2
-   swap_endian<float>(x->A_Z_pilot);      // Z accel in body frame ft/sec^2
+   swap_endian<float>(x->A_X_pilot);
+   swap_endian<float>(x->A_Y_pilot);
+   swap_endian<float>(x->A_Z_pilot);
 
    // stall
-   swap_endian<float>(x->stall_warning);  // 0.0 - 1.0 indicating the amount of stall
-   swap_endian<float>(x->slip_deg);       // slip ball deflection
+   swap_endian<float>(x->stall_warning);
+   swap_endian<float>(x->slip_deg);
 
    // engine status
-   swap_endian<std::uint32_t>(x->num_engines); // number of valid engines
+   swap_endian<std::uint32_t>(x->num_engines);
 
    // consumables
-   swap_endian<std::uint32_t>(x->num_tanks);   // max number of fuel tanks
+   swap_endian<std::uint32_t>(x->num_tanks);
    swap_endian<float>(x->fuel_quantity[0]);
 
    // gear status
    swap_endian<std::uint32_t>(x->num_wheels);
 
    // environment
-   swap_endian<std::uint32_t>(x->cur_time);    // current unix time
-   swap_endian<std::int32_t>(x->warp);         // offset in seconds to unix time
-   swap_endian<float>(x->visibility);          // visibility in meters (for env. effects)
+   swap_endian<std::uint32_t>(x->cur_time);
+   swap_endian<std::int32_t>(x->warp);
+   swap_endian<float>(x->visibility);
 
    // control surface positions (normalized values)
    swap_endian<float>(x->elevator);
