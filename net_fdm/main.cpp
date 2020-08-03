@@ -7,20 +7,6 @@
 
 #include "FGFDMPacket.hpp"
 
-double htond(double x) {
-   int* p{ reinterpret_cast<int*>(&x) };
-   int tmp{ p[0] };
-   p[0] = htonl(p[1]);
-   p[1] = htonl(tmp);
-   return x;
-}
-
-float htonf(float x) {
-   int* p{ reinterpret_cast<int*>(&x) };
-   *p = htonl(*p);
-   return x;
-}
-
 SOCKET sendSocket = -1;
 struct sockaddr_in sendAddr;
 
@@ -68,30 +54,32 @@ void run() {
    while (true) {
       Sleep(update_period);
 
+      // create packet to send to FlightGear, zero initial values
       FGFDMPacket fdm;
       memset(&fdm, 0, sizeof(fdm));
 
-      fdm.version = htonl(FGFDMPacket_Version);
+      fdm.version = FGFDMPacket_Version;
 
-      fdm.latitude  = htond(static_cast<double>(latitude * D2R));
-      fdm.longitude = htond(static_cast<double>(longitude * D2R));
-      fdm.altitude  = htond(static_cast<double>(altitude));
+      fdm.latitude  = latitude * D2R;
+      fdm.longitude = longitude * D2R;
+      fdm.altitude  = altitude;
 
-      fdm.phi   = htonf(static_cast<float>(roll * D2R));
-      fdm.theta = htonf(static_cast<float>(pitch * D2R));
-      fdm.psi   = htonf(static_cast<float>(yaw * D2R));
+      fdm.phi   = static_cast<float>(roll * D2R);
+      fdm.theta = static_cast<float>(pitch * D2R);
+      fdm.psi   = static_cast<float>(yaw * D2R);
+      fdm.num_engines = 1;
 
-      fdm.num_engines = htonl(1);
+      fdm.num_tanks = 1;
+      fdm.fuel_quantity[0] = 100.0;
 
-      fdm.num_tanks = htonl(1);
-      fdm.fuel_quantity[0] = htonf(100.0);
+      fdm.num_wheels = 3;
 
-      fdm.num_wheels = htonl(3);
+      fdm.cur_time = static_cast<std::uint32_t>(std::time(nullptr));
+      fdm.warp = 1;
 
-      fdm.cur_time = htonl(std::time(nullptr));
-      fdm.warp = htonl(1);
+      fdm.visibility = visibility;
 
-      fdm.visibility = htonf(visibility);
+      swapBytes(&fdm);
 
       sendto(sendSocket, reinterpret_cast<char*>(&fdm), sizeof(fdm), 0,
              reinterpret_cast<struct sockaddr*>(&sendAddr), sizeof(sendAddr));

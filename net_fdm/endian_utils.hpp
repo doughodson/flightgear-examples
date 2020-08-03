@@ -8,7 +8,7 @@
 // source: Robust endianness conversion website
 //-----------------------------------------------------------
 template <typename T>
-void swapEndian(T &val) {
+void swap_endian(T &val) {
    union U {
       T val;
       std::array<std::uint8_t, sizeof(T)> raw;

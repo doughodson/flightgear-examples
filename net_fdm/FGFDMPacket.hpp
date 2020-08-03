@@ -37,8 +37,8 @@ struct FGFDMPacket
       FG_MAX_TANKS = 4
    };
 
-   uint32_t version;     // increment when data values change
-   uint32_t padding;	    // padding
+   std::uint32_t version; // increment when data values change
+   std::uint32_t padding; // padding
 
    // positions
    double longitude;     // geodetic (radians)
@@ -72,21 +72,19 @@ struct FGFDMPacket
    // stall
    float stall_warning;  // 0.0 - 1.0 indicating the amount of stall
    float slip_deg;       // slip ball deflection
-
-   // pressure
-    
+   
    // engine status
-   uint32_t num_engines;                // number of valid engines
-   uint32_t eng_state[FG_MAX_ENGINES];  // engine state (off, cranking, running)
-   float rpm[FG_MAX_ENGINES];           // engine RPM rev/min
-   float fuel_flow[FG_MAX_ENGINES];     // fuel flow gallons/hr
-   float fuel_px[FG_MAX_ENGINES];       // fuel pressure psi
-   float egt[FG_MAX_ENGINES];           // exhuast gas temp deg F
-   float cht[FG_MAX_ENGINES];           // cylinder head temp deg F
-   float mp_osi[FG_MAX_ENGINES];        // manifold pressure
-   float tit[FG_MAX_ENGINES];           // turbine Inlet Temperature
-   float oil_temp[FG_MAX_ENGINES];      // oil temp deg F
-   float oil_px[FG_MAX_ENGINES];        // oil pressure psi
+   std::uint32_t num_engines;                // number of valid engines
+   std::uint32_t eng_state[FG_MAX_ENGINES];  // engine state (off, cranking, running)
+   float rpm[FG_MAX_ENGINES];                // engine RPM rev/min
+   float fuel_flow[FG_MAX_ENGINES];          // fuel flow gallons/hr
+   float fuel_px[FG_MAX_ENGINES];            // fuel pressure psi
+   float egt[FG_MAX_ENGINES];                // exhuast gas temp deg F
+   float cht[FG_MAX_ENGINES];                // cylinder head temp deg F
+   float mp_osi[FG_MAX_ENGINES];             // manifold pressure
+   float tit[FG_MAX_ENGINES];                // turbine Inlet Temperature
+   float oil_temp[FG_MAX_ENGINES];           // oil temp deg F
+   float oil_px[FG_MAX_ENGINES];             // oil pressure psi
 
    // consumables
    uint32_t num_tanks;                  // max number of fuel tanks
@@ -100,9 +98,9 @@ struct FGFDMPacket
    float gear_compression[FG_MAX_WHEELS];
 
    // environment
-   uint32_t cur_time;           // current unix time
+   std::uint32_t cur_time;      // current unix time
                                 // FIXME: make this uint64_t before 2038
-   int32_t warp;                // offset in seconds to unix time
+   std::int32_t warp;           // offset in seconds to unix time
    float visibility;            // visibility in meters (for env. effects)
 
    // control surface positions (normalized values)
@@ -120,42 +118,68 @@ struct FGFDMPacket
 
 void swapBytes(FGFDMPacket* x)
 {
-   swapEndian<uint32_t>(x->version);
+   swap_endian<std::uint32_t>(x->version);     // increment when data values change
+   swap_endian<std::uint32_t>(x->padding);	   // padding
 
-   swapEndian<double>(x->latitude);
-   swapEndian<double>(x->longitude);
-   swapEndian<double>(x->altitude);
+   // positions
+   swap_endian<double>(x->latitude);      // geodetic (radians)
+   swap_endian<double>(x->longitude);     // geodetic (radians)
+   swap_endian<double>(x->altitude);      // above sea level (meters)
+   swap_endian<float>(x->agl);            // above ground level (meters)
+   swap_endian<float>(x->phi);            // roll (radians)
+   swap_endian<float>(x->theta);          // pitch (radians)
+   swap_endian<float>(x->psi);            // yaw or true heading (radians)
+   swap_endian<float>(x->alpha);          // angle of attack (radians)
+   swap_endian<float>(x->beta);           // side slip angle (radians)
 
-   swapEndian<float>(x->phi);
-   swapEndian<float>(x->theta);
-   swapEndian<float>(x->psi);
+   // velocities
+   swap_endian<float>(x->phidot);         // roll rate (radians/sec)
+   swap_endian<float>(x->thetadot);       // pitch rate (radians/sec)
+   swap_endian<float>(x->psidot);         // yaw rate (radians/sec)
+   swap_endian<float>(x->vcas);           // calibrated airspeed
+   swap_endian<float>(x->climb_rate);     // feet per second
+   swap_endian<float>(x->v_north);        // north velocity in local/body frame, fps
+   swap_endian<float>(x->v_east);         // east velocity in local/body frame, fps
+   swap_endian<float>(x->v_down);         // down/vertical velocity in local/body frame, fps
+   swap_endian<float>(x->v_body_u);       // ECEF velocity in body frame
+   swap_endian<float>(x->v_body_v);       // ECEF velocity in body frame
+   swap_endian<float>(x->v_body_w);       // ECEF velocity in body frame
 
+   // accelerations
+   swap_endian<float>(x->A_X_pilot);      // X accel in body frame ft/sec^2
+   swap_endian<float>(x->A_Y_pilot);      // Y accel in body frame ft/sec^2
+   swap_endian<float>(x->A_Z_pilot);      // Z accel in body frame ft/sec^2
 
-/*
-   fdm.version = htonl(FGFDMPacket_Version);
+   // stall
+   swap_endian<float>(x->stall_warning);  // 0.0 - 1.0 indicating the amount of stall
+   swap_endian<float>(x->slip_deg);       // slip ball deflection
 
-   fdm.latitude = htond(static_cast<double>(latitude * D2R));
-   fdm.longitude = htond(static_cast<double>(longitude * D2R));
-   fdm.altitude = htond(static_cast<double>(altitude));
+   // engine status
+   swap_endian<std::uint32_t>(x->num_engines); // number of valid engines
 
-   fdm.phi = htonf(static_cast<float>(roll * D2R));
-   fdm.theta = htonf(static_cast<float>(pitch * D2R));
-   fdm.psi = htonf(static_cast<float>(yaw * D2R));
+   // consumables
+   swap_endian<std::uint32_t>(x->num_tanks);   // max number of fuel tanks
+   swap_endian<float>(x->fuel_quantity[0]);
 
-   fdm.num_engines = htonl(1);
+   // gear status
+   swap_endian<std::uint32_t>(x->num_wheels);
 
-   fdm.num_tanks = htonl(1);
-   fdm.fuel_quantity[0] = htonf(100.0);
+   // environment
+   swap_endian<std::uint32_t>(x->cur_time);    // current unix time
+   swap_endian<std::int32_t>(x->warp);         // offset in seconds to unix time
+   swap_endian<float>(x->visibility);          // visibility in meters (for env. effects)
 
-   fdm.num_wheels = htonl(3);
-
-   fdm.cur_time = htonl(std::time(nullptr));
-   fdm.warp = htonl(1);
-
-   fdm.visibility = htonf(visibility);
-*/
-
-
+   // control surface positions (normalized values)
+   swap_endian<float>(x->elevator);
+   swap_endian<float>(x->elevator_trim_tab);
+   swap_endian<float>(x->left_flap);
+   swap_endian<float>(x->right_flap);
+   swap_endian<float>(x->left_aileron);
+   swap_endian<float>(x->right_aileron);
+   swap_endian<float>(x->rudder);
+   swap_endian<float>(x->nose_wheel);
+   swap_endian<float>(x->speedbrake);
+   swap_endian<float>(x->spoilers);
 }
 
 #endif
