@@ -15,7 +15,7 @@ const std::string fg_ip{"127.0.0.1"};
 const int fg_port{5500};
 
 // period to update fg (in milliseconds)
-const int update_period{1000};
+const int update_period{50};
 
 void run();
 

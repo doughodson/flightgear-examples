@@ -1,4 +1,2 @@
-rem change working directory to location of binary
-cd e:\apps\flightgear_2020.1.3\bin
 rem launch FlightGear
-e:\apps\flightgear_2020.1.3\bin\fgfs.exe --aircraft=c172p --disable-random-objects --fdm=external --vc=0 --bpp=32 --timeofday=noon --native-fdm=socket,in,1,,5500,udp
+e:\apps\flightgear_v2018.3.5\bin\fgfs.exe --aircraft=ufo --disable-panel --disable-random-objects --fdm=null --vc=0 --timeofday=noon --native-fdm=socket,in,30,,5500,udp
